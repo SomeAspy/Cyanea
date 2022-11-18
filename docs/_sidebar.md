@@ -1,0 +1,6 @@
+* [Home](/)
+* [Commands](/commands.md)
+* [Database](/database.md)
+* [Dotenv](/dotenv.md)
+* [Slash Commands](/slashCommand.md)
+* [Text Commands](/textCommand.md)
