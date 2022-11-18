@@ -1,29 +1,44 @@
 {
     "example": true,
     "readable": true,
-    "prefix": "?",
+    "devMode":false,
+    "devGuild":"000000000000000000",
     "status": "online",
     "statusText": "I am a bot, and this is my status.",
-    "links": {
-        "blacklist": [
-            "https://example.com/blacklist"
-        ],
-        "whitelist": [
-            "https://example.com/whitelist"
-        ]
-    },
-    "replyTo": [
-        {
-            "name": "Example",
-            "trigger": "test",
-            "message": "This is a test reply."
+    "defaultPrefix": "?",
+    "servers": {
+        "000000000000000000": {
+            "prefix": "?",
+            "linkFilter": {
+                "blacklist": [
+                    "https://example.com/blacklist"
+                ],
+                "whitelist": [
+                    "https://example.com/whitelist"
+                ]
+            },
+            "userFilter": {
+                "whitelistEnabled": false,
+                "blacklist": [
+                    "000000000000000000"
+                ],
+                "whitelist": [
+                    "000000000000000000"
+                ]
+            },
+            "replyTo": {
+                "test": "This is a test reply."
+            },
+            "reactTo": {
+                "react": "000000000000000000"
+            },
+            "slashOverrides":{
+                "test":{
+                    "id":"000000000000000000",
+                    "type":"USER",
+                    "permission":true
+                }
+            }
         }
-    ],
-    "reactTo": [
-        {
-            "name": "Example",
-            "trigger": "react",
-            "emoji": "thumbsup"
-        }
-    ]
+    }
 }

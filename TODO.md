@@ -11,12 +11,12 @@
 - Text Back to Phrases
 - Black/Whitelist Links
 - Search Images On Google
+- Website
 
 ### Privileged Intents:
 - Message Content Intent
     - React to phrases
     - Text back to phrases
     - Black/Whitelist links
-    - All commands must be text based
 - Server Members Intent
     - Auto give role?
