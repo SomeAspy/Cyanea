@@ -1,4 +1,4 @@
-# DojoBot
+# Cyanea
 ## A custom bot for [Doujin Dojo](https://discord.gg/xsKF5U5aKw)
 
 <br>
