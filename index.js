@@ -47,7 +47,7 @@ const commandFolders = readdirSync('./commands');
 // Text Command Indexer
 for (const folder of commandFolders) {
     const commandFiles = readdirSync(`./commands/${folder}`).filter(file => {
-        file.endsWith('.js') && !file.startsWith('slash.')
+        file.endsWith('.js') && file.startsWith('text.')
     });
     for (const file of commandFiles) {
         import(`./commands/${folder}/${file}`).then(command => {
