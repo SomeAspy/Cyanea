@@ -61,7 +61,7 @@ for (const folder of commandFolders) {
 
 for (const folder of commandFolders) {
     const commandFiles = readdirSync(`./commands/${folder}`).filter((file) =>
-        file.endsWith('.js'),
+        file.endsWith('.js') && file.startsWith('slash.'),
     );
     for (const file of commandFiles) {
         console.log(`[Slash Indexer]: Found command file: ${file}`.green);
@@ -79,9 +79,10 @@ await pushCommands();
 cli.on('messageCreate', async message => {
     try {
         if (debug) {
-            console.log(`[Message Handler]: Message received: ${message.content}`.cyan);
+            console.log(`[Message Handler]: Message received: ${message.content}`);
         }
-        if (isUserBlocked(message.author.id, message.guild.id)) {
+        if (await isUserBlocked(message.author.id, message.guild.id)) {
+            console.log(`[Message Handler]: User ${message.author.id} is blocked from using this bot!`.red);
             return;
         }
 
@@ -112,7 +113,11 @@ cli.on('messageCreate', async message => {
 // Slash command handler
 cli.on('interactionCreate', async interaction => {
     if (!interaction.isCommand()) return;
-    if (isUserBlocked(interaction.user.id, interaction.guild.id)) {
+    if (await isUserBlocked(interaction.user.id, interaction.guild.id)) {
+        if (debug) {
+            console.log(`[Slash Handler]: User ${interaction.user.id} is blocked from using this bot!`.red);
+        }
+        interaction.reply({ content: "You are blocked from using this bot!", ephemeral: true });
         return;
     }
     try {
@@ -136,4 +141,4 @@ cli.on('invalidated', () => {
 });
 
 await cli.login(process.env.DISCORD_TOKEN);
-cli.user.setStatus(getTopLevel("statusText"));
+cli.user.setStatus(await getTopLevel("statusText"));
