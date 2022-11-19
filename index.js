@@ -1,8 +1,8 @@
 import { Client, GatewayIntentBits } from 'discord.js';
 import dotenv from 'dotenv';
 import { readdirSync } from 'fs';
-import { getServer, readDB, getTopLevel } from './lib/db.js';
-import { ObjectSearch, ResolveEmoji } from './lib/tools.js';
+import { getServer, readDB, getTopLevel, isUserBlocked } from './lib/db.js';
+import { ObjectSearch } from './lib/tools.js';
 
 const args = process.argv.slice(2);
 
@@ -23,7 +23,7 @@ cli.once('ready', () => console.log(`Connected to Discord!\nGuild Count: ${cli.g
 export let slashCommandData = [];
 let slashCommands = new Map();
 
-export const clientID = cli.user.id; // this must happen before the commands are pushed
+export const clientID = getTopLevel("botID") // this must happen before the commands are pushed
 
 const commandFolders = readdirSync('./commands');
 
@@ -35,7 +35,7 @@ for (const folder of commandFolders) {
     for (const file of commandFiles) {
         import(`./commands/${folder}/${file}`).then(command => {
             cli.commands.set(command.name, command);
-            console.log('Found command: ' + command.name);
+            console.log('[Command Indexer]: Found command file: ' + file);
         })
     }
 }
@@ -43,27 +43,28 @@ for (const folder of commandFolders) {
 // Slash Command Indexer
 
 for (const folder of commandFolders) {
-    const commandFiles = readdirSync(`./commands/${folder}`).filter(file => {
-        file.endsWith('.js') && file.startsWith('slash.')
-    });
+    const commandFiles = readdirSync(`./commands/${folder}`).filter((file) =>
+        file.endsWith('.js'),
+    );
     for (const file of commandFiles) {
-        console.log('Found slash command file: ' + file);
-        await import(`./commands/${folder}/${file}`).then(command => {
-            slashCommands.set(command.name, command);
-            slashCommandData.push(command.data.toJSON());
-        })
+        console.log(`[Slash Indexer]: Found command file: ${file}`);
+        const slashCommand = await import(`./commands/${folder}/${file}`);
+        slashCommandData.push(slashCommand.data);
+        slashCommands.set(slashCommand.data.name, slashCommand);
     }
 }
 
 import { pushCommands } from './lib/pushCommands.js';
 await pushCommands();
 
-console.log(await readDB())
-
 
 // Text command handler
 cli.on('messageCreate', async message => {
     try {
+        if (isUserBlocked(message.author.id, message.guild.id)) {
+            return;
+        }
+        if (message.author.id === cli.user.id) return;
         console.log("Saw Message!");
         const server = await getServer(message.guild.id);
         if (!message.author.bot) {
@@ -87,8 +88,11 @@ cli.on('messageCreate', async message => {
 // Slash command handler
 cli.on('interactionCreate', async interaction => {
     if (!interaction.isCommand()) return;
+    if (isUserBlocked(interaction.user.id, interaction.guild.id)) {
+        return;
+    }
     try {
-        commands.get(interaction.commandName).execute(interaction, cli);
+        slashCommands.get(interaction.commandName).execute(interaction, cli);
         console.log(`Executed slash command ${interaction.commandName}`);
     } catch (err) {
         console.log(err);
