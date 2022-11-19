@@ -4,3 +4,5 @@
 * [Dotenv](/dotenv.md)
 * [Slash Commands](/slashCommand.md)
 * [Text Commands](/textCommand.md)
+* [Developer Mode](/developerMode.md)
+* [Startup Arguments](/flags.md)

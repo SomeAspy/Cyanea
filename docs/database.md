@@ -3,11 +3,11 @@ This bot works off a local JSON database
 
 - `example` - `boolean` - Calls out the user if they are using the unmodified example file
 - `readable` - `boolean` - This should always be `true`
-- `devMode` - `boolean` - Whether or not the bot pushes commands to the development guild only
-- `devGuild` - `Guild ID` - The development guild ID, only needed if `devMode` is ` true`
+- `devGuild` - `Guild ID` - The development guild ID, only needed if `--dev` flag is passed
 - `status` - `online/dnd/idle/offline` - The bots presence
 - `statusText` - `string` - The bots status
 - `defaultPrefix` - `string` - The bots default prefix
+- `botID` - `string` - The bots user ID
 - `servers` - `object` - List of servers the bot has settings for, stored by server ID
 - `<server ID>` - `Guild ID` - The guild the settings in this object apply to
     - `prefix` - `string` - The guilds set prefix

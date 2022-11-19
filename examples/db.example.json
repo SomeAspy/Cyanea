@@ -1,11 +1,11 @@
 {
     "example": true,
     "readable": true,
-    "devMode":false,
-    "devGuild":"000000000000000000",
+    "devGuild": "000000000000000000",
     "status": "online",
     "statusText": "I am a bot, and this is my status.",
     "defaultPrefix": "?",
+    "botID": "000000000000000000",
     "servers": {
         "000000000000000000": {
             "prefix": "?",
@@ -27,16 +27,16 @@
                 ]
             },
             "replyTo": {
-                "test": "This is a test reply."
+                "example": "Example reply."
             },
             "reactTo": {
                 "react": "000000000000000000"
             },
-            "slashOverrides":{
-                "test":{
-                    "id":"000000000000000000",
-                    "type":"USER",
-                    "permission":true
+            "slashOverrides": {
+                "example": {
+                    "id": "000000000000000000",
+                    "type": "USER",
+                    "permission": true
                 }
             }
         }
