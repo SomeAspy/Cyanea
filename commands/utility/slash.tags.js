@@ -1,4 +1,4 @@
-import { readDB } from "../../lib/db.js";
+import { getServerSetting } from "../../lib/db.js";
 import { SlashCommandBuilder } from "discord.js";
 export const data = new SlashCommandBuilder()
     .setName("tags")
@@ -6,10 +6,12 @@ export const data = new SlashCommandBuilder()
 
 
 export async function execute(interaction) {
-    let tags = await readDB(interaction.guildId, "replyTo");
+    let tags = await getServerSetting(interaction.guildId, "replyTo");
     let tagString = "";
+    let count = 0;
     for (const tag in tags) {
-        tagString += `${tag}: ${tags[tag]}\n`;
+        tagString += `${count}. ${tag}: ${tags[tag]}\n`;
+        ++count;
     }
-    await interaction.reply(tagString);
+    await interaction.reply(`\`\`\`${tagString}\`\`\``);
 }
