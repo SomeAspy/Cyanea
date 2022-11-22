@@ -1,11 +1,11 @@
 import { EmbedBuilder } from 'discord.js';
 import { getServerSettings } from '../../lib/db.js';
 import { fillPlaceholders } from '../../lib/tools.js';
-export const name = "ban"
-export const description = "Bans a user from the server."
-export const usage = "ban <user> [reason]"
-export const permissions = "BAN_MEMBERS"
-export const botPerms = "BAN_MEMBERS"
+export const name = "kick"
+export const description = "Kicks a user from the server."
+export const usage = "kick <user> [reason]"
+export const permissions = "KICK_MEMBERS"
+export const botPerms = "KICK_MEMBERS"
 export const guildOnly = true
 export async function execute(message, args, cli) {
     const user = message.mentions.members.first() || await cli.users.fetch(args[0]);
@@ -14,14 +14,14 @@ export async function execute(message, args, cli) {
         return message.reply("Either you did not mention a user or the user does not exist.");
     }
     try {
-        if (user.bannable) {
+        if (user.kickable) {
             let title, content, footer;
             await getServerSettings(message.guild.id).then((res) => {
-                content = res["messages"]["ban"]["content"]
-                title = res["messages"]["ban"]["title"]
-                footer = res["messages"]["ban"]["footer"]
+                content = res["messages"]["kick"]["content"]
+                title = res["messages"]["kick"]["title"]
+                footer = res["messages"]["kick"]["footer"]
             });
-            await message.guild.bans.create(user, { reason: reason });
+            await user.kick(reason);
             const embed = new EmbedBuilder()
                 .setTitle(fillPlaceholders(title, message))
                 .setColor(0x00FF00)
@@ -30,11 +30,11 @@ export async function execute(message, args, cli) {
                 .setFooter({ text: fillPlaceholders(footer, message), iconURL: message.author.displayAvatarURL() });
             await message.channel.send({ embeds: [embed] });
         } else {
-            message.reply("I cannot ban this user, they may have a higher role than me.");
+            message.reply("I cannot kick this user, they may have a higher role than me.");
         }
     } catch (err) {
         console.log(err);
-        message.reply(":warning: There was an error in the ban process, the user may or may not have been banned!");
+        message.reply(":warning: There was an error in the kick process, the user may or may not have been kicked!");
     }
 
 }

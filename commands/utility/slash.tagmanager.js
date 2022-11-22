@@ -2,7 +2,7 @@ import { delServerKey, newServerKey, readDB } from "../../lib/db.js";
 import { SlashCommandBuilder } from "discord.js";
 import { PermissionFlagsBits } from "discord.js";
 export const data = new SlashCommandBuilder()
-    .setName("tag")
+    .setName("tagmanager")
     .setDescription("Manage tags for this server")
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
     .addSubcommand((subcommand) =>
@@ -26,10 +26,10 @@ export async function execute(interaction) {
     const response = interaction.options.getString("response");
     if (subcommand === "add") {
         await newServerKey(interaction.guildId, "replyTo", trigger, response);
-        interaction.reply(`Added tag ${interaction.options.getString("trigger")} with response ${interaction.options.getString("response")}`);
+        interaction.reply(`Added tag "${interaction.options.getString("trigger")}" with response "${interaction.options.getString("response")}"`);
     }
     else if (subcommand === "remove") {
         await delServerKey(interaction.guildId, "replyTo", interaction.options.getString("trigger"));
-        interaction.reply(`Removed tag ${trigger}`);
+        interaction.reply(`Removed tag "${trigger}"`);
     }
 }

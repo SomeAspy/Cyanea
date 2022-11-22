@@ -1,7 +1,7 @@
 import { Client, GatewayIntentBits } from 'discord.js';
 import dotenv from 'dotenv';
 import { readdirSync } from 'fs';
-import { getServerSettings, readDB, getTopLevel, isUserBlocked } from './lib/db.js';
+import { getServerSettings, getTopLevel, isUserBlocked } from './lib/db.js';
 import { ObjectSearch } from './lib/tools.js';
 import colors from 'colors';
 
@@ -15,35 +15,16 @@ if (await getTopLevel("example")) {
     process.exit(1);
 }
 
-
-const args = process.argv.slice(2);
-
-export let debug;
-if (args.find(arg => arg === "--debug")) {
-    console.log("[Info]: Running in debug mode!".blue);
-    debug = true;
-} else {
-    debug = false;
-}
-
-export let devMode;
-if (args.find(arg => arg === "--dev")) {
-    console.log("[Info]: Running in development mode!".blue);
-    devMode = true;
-} else {
-    devMode = false;
-}
+import { debug, verbose, } from './lib/flags.js';
 
 dotenv.config();
 
-const intents = [
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMessages,
-    GatewayIntentBits.MessageContent
-]
-
 const cli = new Client({
-    intents: intents,
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent,
+    ]
 });
 
 cli.once('ready', () => console.log(`[info]: Connected to Discord!\n\tGuild Count: ${cli.guilds.cache.size}\n\tMy ID: ${cli.user.id}`.green))
@@ -68,7 +49,7 @@ for (const folder of commandFolders) {
     for (const file of commandFiles) {
         await import(`./commands/${folder}/${file}`).then(command => {
             commands.set(command.name, command);
-            console.log(`[Text Command Indexer]: Found command file:  + file`.green);
+            console.log(`[Text Command Indexer]: Found command file: ${file}`.green);
         })
     }
 }
@@ -80,7 +61,7 @@ for (const folder of commandFolders) {
         file.endsWith('.js') && file.startsWith('slash.'),
     );
     for (const file of commandFiles) {
-        console.log(`[Slash Indexer]: Found command file: ${file}`.green);
+        console.log(`[Slash Command Indexer]: Found command file: ${file}`.green);
         const slashCommand = await import(`./commands/${folder}/${file}`);
         slashCommandData.push(slashCommand.data);
         slashCommands.set(slashCommand.data.name, slashCommand);
@@ -127,7 +108,6 @@ cli.on('messageCreate', async message => {
                     if (command.usage) {
                         reply += `\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\``;
                     }
-
                     return message.channel.send(reply);
                 }
 
@@ -146,26 +126,40 @@ cli.on('messageCreate', async message => {
                     }
                 }
 
+                // Check if command is owner only
+                if (command.ownerOnly && (await getTopLevel("ownerIDs")).includes(message.author.id)) {
+                    return await message.reply('Only the bot owners can do this!');
+                }
+
                 try {
-                    await command.execute(message, args);
+                    await command.execute(message, args, cli);
                 }
                 catch (error) {
                     console.error(error);
-                    message.reply('there was an error trying to execute that command!');
+                    return await message.reply('there was an error trying to execute that command!');
                 }
 
 
             } else if (ObjectSearch(message.content, server.replyTo)) {
-                message.channel.send(ObjectSearch(message.content, server.replyTo));
+                try {
+                    await message.channel.send(ObjectSearch(message.content, server.replyTo));
+                } catch (error) {
+                    console.error(error);
+                }
             }
             if (ObjectSearch(message.content, server.reactTo)) {
-                message.react(ObjectSearch(message.content, server.reactTo));
+                try {
+                    await message.react(ObjectSearch(message.content, server.reactTo));
+                } catch (error) {
+                    console.error(error);
+                    message.reply("I tried to react to that message with the emoji you specified, but I couldn't!");
+                }
             }
 
 
         }
     } catch (err) {
-        console.log(colors.red(err));
+        console.log(colors.red(`[Message Handler]: ${err}`));
     }
 })
 
@@ -191,7 +185,16 @@ cli.on('interactionCreate', async interaction => {
 
 
 
-cli.on(['error', 'invalidRequestWarning', 'rateLimit', 'warn'], (e) => console.log(colors.red(e)));
+cli.on('error', (e) => console.log(colors.red(e)));
+cli.on('warn', (e) => console.log(colors.yellow(e)));
+cli.on('shardError', (e) => console.log(colors.red(e)));
+cli.on('shardDisconnect', (e) => console.log(colors.red(e)));
+cli.on('shardReconnecting', (e) => console.log(colors.yellow(e)));
+cli.on('shardResume', (e) => console.log(colors.green(e)));
+cli.on('shardReady', (e) => console.log(colors.green(e)));
+if (verbose) {
+    cli.on('debug', (e) => console.log(colors.magenta(e)));
+}
 cli.on('invalidated', () => {
     console.log(
         'Session invalidated! Shutting down, Reboot will be required manually.'.bgRed,

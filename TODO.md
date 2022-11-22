@@ -1,14 +1,16 @@
 ### Wanted Features:
-- Ban
-- Kick
+- ~~Ban~~
+- ~~Kick~~
 - Mute
+    - Timeout
+    - See Muted Channel
 - Music
 - Deafen
 - VC Mute
 - Add Role
 - Auto Give Role
-- React To Phrases
-- Text Back to Phrases
+- ~~React To Phrases~~
+- ~~Text Back to Phrases~~
 - Black/Whitelist Links
 - Search Images On Google
 - Website
@@ -19,4 +21,8 @@
     - Text back to phrases
     - Black/Whitelist links
 - Server Members Intent
-    - Auto give role?
+    - Auto give role
+
+TODO:
+- Fix Ban/Kick Not Taking IDs
+- ~~Gracefully Crash On Bad Database~~

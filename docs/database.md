@@ -8,6 +8,7 @@ This bot works off a local JSON database
 - `statusText` - `string` - The bots status
 - `defaultPrefix` - `string` - The bots default prefix
 - `botID` - `string` - The bots user ID
+- `ownerIDs` - `string array` - array of user IDs with owner permissions
 - `servers` - `object` - List of servers the bot has settings for, stored by server ID
 - `<server ID>` - `Guild ID` - The guild the settings in this object apply to
     - `prefix` - `string` - The guilds set prefix
@@ -18,6 +19,12 @@ This bot works off a local JSON database
         - `whitelistEnabled` - `boolean` - Block users who are not on the whitelist
         - `blacklist` - `string array` - users to ban from the bot
         - `whitelist` - `string array` - users to allow to use the bot (effective only when `whitelistEnabled` is `true`)
+    - `messages` - `object` - Storage for response messages
+        - `responseName` - `string` - The message name to apply the contents to
+            - `enabled` - `boolean` - Whether or not this message will be sent
+            - `title` - `string` - Title of the embed, or bold text in a message
+            - `content` - `string` - Content of the message or embed
+            - `footer` - `string` - Footer of the embed, or italicized text in a message
     - `replyTo` - `object` - Storage for automatic responses
         - `<trigger>` - `string` - The trigger to send the text, the value is what is sent.
     - `reactTo` - `object` - Storage for automatic reactions

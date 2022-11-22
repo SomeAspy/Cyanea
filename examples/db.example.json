@@ -6,6 +6,9 @@
     "statusText": "I am a bot, and this is my status.",
     "defaultPrefix": "?",
     "botID": "000000000000000000",
+    "ownerIDs": [
+        "000000000000000000"
+    ],
     "servers": {
         "000000000000000000": {
             "prefix": "?",
@@ -18,22 +21,48 @@
                 ]
             },
             "userFilter": {
-                "whitelistEnabled": false,
+                "whitelistEnabled": true,
                 "blacklist": [
                     "000000000000000000"
                 ],
                 "whitelist": [
+                    "000000000000000000",
+                    "000000000000000000",
                     "000000000000000000"
                 ]
             },
+            "messages": {
+                "welcome": {
+                    "enabled": true,
+                    "channel": "000000000000000000",
+                    "message": "Welcome to the server, {user}!"
+                },
+                "leave": {
+                    "enabled": true,
+                    "channel": "000000000000000000",
+                    "message": "Goodbye, {user}!"
+                },
+                "ban": {
+                    "enabled": true,
+                    "title": "User Banned",
+                    "content": "{user} was banned by {moderator} for {reason}.",
+                    "footer": "Banned by {author}"
+                },
+                "kick": {
+                    "enabled": true,
+                    "title": "User Kicked",
+                    "content": "{user} was kicked by {moderator} for {reason}.",
+                    "footer": "Kicked by {author}"
+                }
+            },
             "replyTo": {
-                "example": "Example reply."
+                "example": "this is an example response"
             },
             "reactTo": {
                 "react": "000000000000000000"
             },
             "slashOverrides": {
-                "example": {
+                "test": {
                     "id": "000000000000000000",
                     "type": "USER",
                     "permission": true

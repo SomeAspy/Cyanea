@@ -2,6 +2,7 @@
 
 - `--debug` - Prints extra console messages
 - `--dev` - Runs the bot in developer mode
+- `--verbose` - Prints debug messages from the Discord API
 
 <br>
 <br>
