@@ -7,7 +7,7 @@
 - Music
 - Deafen
 - VC Mute
-- Add Role
+- ~~Add Role~~
 - Auto Give Role
 - ~~React To Phrases~~
 - ~~Text Back to Phrases~~
