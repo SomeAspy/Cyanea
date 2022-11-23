@@ -1,4 +1,4 @@
-import { delServerKey, newServerKey, readDB } from "../../lib/db.js";
+import { delServerKey, newServerKey } from "../../lib/db.js";
 import { SlashCommandBuilder } from "discord.js";
 import { PermissionFlagsBits } from "discord.js";
 export const data = new SlashCommandBuilder()

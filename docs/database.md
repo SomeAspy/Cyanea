@@ -1,8 +1,6 @@
 # Database File
 This bot works off a local JSON database
 
-- `example` - `boolean` - Calls out the user if they are using the unmodified example file
-- `readable` - `boolean` - This should always be `true`
 - `devGuild` - `Guild ID` - The development guild ID, only needed if `--dev` flag is passed
 - `status` - `online/dnd/idle/offline` - The bots presence
 - `statusText` - `string` - The bots status

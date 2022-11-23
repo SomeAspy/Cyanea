@@ -2,7 +2,7 @@
 - ~~Ban~~
 - ~~Kick~~
 - Mute
-    - Timeout
+    - ~~Timeout~~
     - See Muted Channel
 - Music
 - Deafen
@@ -26,3 +26,4 @@
 TODO:
 - Fix Ban/Kick Not Taking IDs
 - ~~Gracefully Crash On Bad Database~~
+- Move away from JSON Database
