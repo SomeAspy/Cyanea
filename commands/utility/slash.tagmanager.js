@@ -1,4 +1,4 @@
-import { delServerKey, newServerKey, readDB } from "../../lib/db.js";
+import { delServerKey, newServerKey } from "../../lib/db.js";
 import { SlashCommandBuilder, PermissionFlagsBits } from "discord.js";
 export const data = new SlashCommandBuilder()
     .setName("tagmanager")
@@ -16,7 +16,7 @@ export const data = new SlashCommandBuilder()
             .setName("remove")
             .setDescription("Remove a tag")
             .addStringOption((option) => option.setName("trigger").setDescription("Text to trigger response").setRequired(true))
-    )
+    );
 
 
 export async function execute(interaction) {
