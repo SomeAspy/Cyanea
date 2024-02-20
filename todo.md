@@ -1,9 +1,10 @@
-### Wanted Features:
+# Wanted Features
+
 - ~~Ban~~
 - ~~Kick~~
 - Mute
-    - ~~Timeout~~
-    - See Muted Channel
+  - ~~Timeout~~
+  - See Muted Channel
 - Music
 - Deafen
 - VC Mute
@@ -15,15 +16,17 @@
 - Search Images On Google
 - Website
 
-### Privileged Intents:
+## Privileged Intents
+
 - Message Content Intent
-    - React to phrases
-    - Text back to phrases
-    - Black/Whitelist links
+  - React to phrases
+  - Text back to phrases
+  - Black/Whitelist links
 - Server Members Intent
-    - Auto give role
+  - Auto give role
 
 TODO:
+
 - Fix Ban/Kick Not Taking IDs
 - ~~Gracefully Crash On Bad Database~~
 - Move away from JSON Database

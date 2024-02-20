@@ -4,6 +4,9 @@
 
 ## Use it yourself
 
+> [!CAUTION]
+> You ***Really*** shouldn't. This bot is not production ready and it's database is a local JSON file.
+
 1. Rename `example.env` to `.env`
 2. Rename `/db/db.example.json` to `/db/db.json`
 3. Replace `PASTE YOUR TOKEN HERE` with your bot token
